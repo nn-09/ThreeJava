@@ -1,6 +1,22 @@
 import * as THREE from 'three';
+import { Sky } from 'three/examples/jsm/Addons.js';
+const CubeTextureLoader=new THREE.CubeTextureLoader();
+
 const scene=new  THREE.Scene();
 const canvas=document.querySelector("canvas.webgl");
+const environmentMap=CubeTextureLoader.load([
+    "sky/px.png",
+    "sky/nx.png",
+    "sky/py.png",
+    "sky/ny.png",
+    "sky/pz.png",
+    "sky/nz.png",
+
+]);
+// console.log(environmentMap);
+
+scene.environment=environmentMap;
+scene.background=environmentMap;
 //const geometry=new THREE.BoxGeometry();
 //const material=new THREE.MeshBasicMaterial();
 //scene.add(geometry,material);
@@ -30,3 +46,9 @@ const renderer=new THREE.WebGLRenderer(
 );
 renderer.setSize(attributes.width,attributes.height);
 renderer.render(scene,camera);
+
+const tick=()=>{
+    renderer.render(scene,camera);
+    window.requestAnimationFrame(tick);
+};
+tick();
